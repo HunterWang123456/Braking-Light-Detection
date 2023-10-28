@@ -1,5 +1,6 @@
 This is a tutorial about training the yolov7 model to recognize rear signal light, and it's credit to: XXX
-Firsly, the following is some introduction to the difference of yolo model
+
+First, we can m
 ## Web Demo
 
 - Integrated into [Huggingface Spaces 🤗](https://huggingface.co/spaces/akhaliq/yolov7) using Gradio. Try out the Web Demo [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/akhaliq/yolov7)
