@@ -320,6 +320,25 @@ def create_yaml():
 
   print('File generated successfully')
 ```
+and this
+``` shell
+create_dirs()
+```
+Here, you will see a dictionary like the picture below inside yolov7 folder (without the arrows)
+![下載](https://github.com/HunterWang123456/yolov7_for_braking/assets/74261517/f7a63a26-33b2-4d9b-8b64-44980ad98920)
+now, unzip and open with downloaded "rear_signal_dataset" and select several pictures from folders with "BOO" at the end of the folder name(which means braking light only without left/right signal light) and manually upload them into the braking folder (blue arrow) inside data_source folder. On the other hand, select pictures from folders with "OOO" (which means no any signal light) and upload to the normal folder(red arrow). Here, I recommend you select pictures from more "BOO" and "OOO" folder so that you can have more types of cars/size/resolution and reached a greater generalizability. Also, in my experience, the total picuture selected and uploaded should > 400 in each (braking/normal) folder to have a better training result. 
+
+Next, download background picture from [GTSDB dataset](https://benchmark.ini.rub.de/gtsdb_dataset.html)
+![GTSDB dataset](https://github.com/HunterWang123456/yolov7_for_braking/assets/74261517/8a900e3d-8c7c-488d-951d-d9442e6875b4)
+![GTSDB dataset-1](https://github.com/HunterWang123456/yolov7_for_braking/assets/74261517/52792da7-c7f0-4329-8752-805262888656)
+Each of the three dataset is okay. After unzipping, randomly select and upload the files inside to the folder named "background" (black arrow)
+
+You can also create folder in the cloud storing space and upload the training/testing data. Rung the following code and the files will be copied to the virtual machine.
+``` shell
+!cp /content/gdrive/MyDrive/background/* /content/yolov7/data_source/Backgrounds
+!cp /content/gdrive/MyDrive/data/break/* /content/yolov7/data_source/Braking
+!cp /content/gdrive/MyDrive/data/normal/* /content/yolov7/data_source/Normal
+```
 
 
 ![output_3](https://github.com/HunterWang123456/yolov7_for_braking/assets/74261517/4fc41c1b-00a4-40d2-963e-f6d14ad4ed46)
