@@ -1,4 +1,4 @@
-This is a tutorial about training the yolov7 model to recognize rear signal light, and it's credit to: XXX
+This is a tutorial about training the yolov7 model to recognize rear signal light and tell braking and normal status. It's credit to: [WongKinYiu](https://github.com/WongKinYiu/yolov7.git) and [Armaan Sandhu](https://medium.com/@armaan.sandhu.2002/training-yolov7-to-detect-vehicle-braking-e8e7e9db1b3b#3a49)
 
 First, we can m
 ## Web Demo
