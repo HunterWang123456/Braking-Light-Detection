@@ -326,6 +326,7 @@ create_dirs()
 ```
 Here, you will see a dictionary like the picture below inside yolov7 folder (without the arrows)
 ![下載](https://github.com/HunterWang123456/yolov7_for_braking/assets/74261517/f7a63a26-33b2-4d9b-8b64-44980ad98920)
+
 now, unzip and open with downloaded "rear_signal_dataset" and select several pictures from folders with "BOO" at the end of the folder name(which means braking light only without left/right signal light) and manually upload them into the braking folder (blue arrow) inside data_source folder. On the other hand, select pictures from folders with "OOO" (which means no any signal light) and upload to the normal folder(red arrow). Here, I recommend you select pictures from more "BOO" and "OOO" folder so that you can have more types of cars/size/resolution and reached a greater generalizability. Also, in my experience, the total picuture selected and uploaded should > 400 in each (braking/normal) folder to have a better training result. 
 
 Next, download background picture from [GTSDB dataset](https://benchmark.ini.rub.de/gtsdb_dataset.html)
@@ -333,6 +334,19 @@ Next, download background picture from [GTSDB dataset](https://benchmark.ini.rub
 ![GTSDB dataset-1](https://github.com/HunterWang123456/yolov7_for_braking/assets/74261517/52792da7-c7f0-4329-8752-805262888656)
 Each of the three dataset is okay. After unzipping, randomly select and upload the files inside to the folder named "background" (black arrow)
 
+2.2 Merge the vehicle images with the backgrounds
+``` shell
+create_dirs()
+```
+2.3 Split the generated images and labels into training, validation and testing sets
+``` shell
+split_dataset()
+```
+2.4 Generate the yaml file containing the dataset paths along with the class details
+``` shell
+create_yaml()
+```
+If so far so good, then congets! The preprocessing is completed!
 You can also create folder in the cloud storing space and upload the training/testing data. Rung the following code and the files will be copied to the virtual machine.
 ``` shell
 !cp /content/gdrive/MyDrive/background/* /content/yolov7/data_source/Backgrounds
