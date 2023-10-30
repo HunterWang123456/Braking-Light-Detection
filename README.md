@@ -334,6 +334,13 @@ Next, download background picture from [GTSDB dataset](https://benchmark.ini.rub
 ![GTSDB dataset-1](https://github.com/HunterWang123456/yolov7_for_braking/assets/74261517/52792da7-c7f0-4329-8752-805262888656)
 Each of the three dataset is okay. After unzipping, randomly select and upload the files inside to the folder named "background" (black arrow)
 
+You can also create folder in the cloud storing space and upload the training/testing data. Rung the following code and the files will be copied to the virtual machine.
+``` shell
+!cp /content/gdrive/MyDrive/background/* /content/yolov7/data_source/Backgrounds
+!cp /content/gdrive/MyDrive/data/break/* /content/yolov7/data_source/Braking
+!cp /content/gdrive/MyDrive/data/normal/* /content/yolov7/data_source/Normal
+```
+
 2.2 Merge the vehicle images with the backgrounds
 ``` shell
 create_dirs()
@@ -347,12 +354,6 @@ split_dataset()
 create_yaml()
 ```
 If so far so good, then congets! The preprocessing is completed!
-You can also create folder in the cloud storing space and upload the training/testing data. Rung the following code and the files will be copied to the virtual machine.
-``` shell
-!cp /content/gdrive/MyDrive/background/* /content/yolov7/data_source/Backgrounds
-!cp /content/gdrive/MyDrive/data/break/* /content/yolov7/data_source/Braking
-!cp /content/gdrive/MyDrive/data/normal/* /content/yolov7/data_source/Normal
-```
 
 
 ![output_3](https://github.com/HunterWang123456/yolov7_for_braking/assets/74261517/4fc41c1b-00a4-40d2-963e-f6d14ad4ed46)
