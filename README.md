@@ -12,7 +12,7 @@ drive.mount('/content/gdrive')
 ``` shell
 !git clone https://github.com/WongKinYiu/yolov7.git
 ```
-1.3 Install YOLOv7 dependencies
+1.3 Install YOLOv7 dependencies, and direct into yolov7 folder
 ``` shell
 %cd yolov7
 !pip install -r requirements.txt
@@ -26,7 +26,7 @@ drive.mount('/content/gdrive')
 
 First, you have to download the already-prepared dataset from [here](http://vllab1.ucmerced.edu/~hhsu22/rear_signal/rear_signal#)
 
-2.1 Run the following code and you will get a two folder called data_source and dataset respectively inside the dictionary of yolov7
+2.1 Run the following code and you will get two folders called data_source and dataset respectively inside the dictionary of yolov7
 ``` shell
 import cv2
 from PIL import Image
@@ -81,11 +81,6 @@ def create_dirs():
     os.mkdir(os.path.join(folder_path, 'images'))                                 # create the folders named 'images'
     os.mkdir(os.path.join(folder_path, "labels"))                                 # and 'labels'
   print('Directory structure created for dataset')
-
-
-
-
-
 
 
  # A function to square the background image received as a numpy array
@@ -324,7 +319,7 @@ and this
 ``` shell
 create_dirs()
 ```
-Here, you will see a dictionary like the picture below inside yolov7 folder (without the arrows)
+Here, you will see a dictionary like the picture below inside yolov7 folder (without the arrows), and it can temporarily store the source images, the merged images and the label files and then to store the final split dataset ready for training.
 ![下載](https://github.com/HunterWang123456/yolov7_for_braking/assets/74261517/f7a63a26-33b2-4d9b-8b64-44980ad98920)
 
 now, unzip and open with downloaded "rear_signal_dataset" and select several pictures from folders with "BOO" at the end of the folder name(which means braking light only without left/right signal light) and manually upload them into the braking folder (blue arrow) inside data_source folder. On the other hand, select pictures from folders with "OOO" (which means no any signal light) and upload to the normal folder(red arrow). Here, I recommend you select pictures from more "BOO" and "OOO" folder so that you can have more types of cars/size/resolution and reached a greater generalizability. Also, in my experience, the total picuture selected and uploaded should > 400 in each (braking/normal) folder to have a better training result. 
@@ -332,7 +327,7 @@ now, unzip and open with downloaded "rear_signal_dataset" and select several pic
 Next, download background picture from [GTSDB dataset](https://benchmark.ini.rub.de/gtsdb_dataset.html)
 ![GTSDB dataset](https://github.com/HunterWang123456/yolov7_for_braking/assets/74261517/8a900e3d-8c7c-488d-951d-d9442e6875b4)
 ![GTSDB dataset-1](https://github.com/HunterWang123456/yolov7_for_braking/assets/74261517/52792da7-c7f0-4329-8752-805262888656)
-Each of the three dataset is okay. After unzipping, randomly select and upload the files inside to the folder named "background" (black arrow)
+Each of the three dataset is okay. After unzipping, randomly select and upload the files (.ppm file) inside to the folder named "background" (black arrow)
 
 You can also create folder in the cloud storing space and upload the training/testing data. Rung the following code and the files will be copied to the virtual machine.
 ``` shell
@@ -341,20 +336,57 @@ You can also create folder in the cloud storing space and upload the training/te
 !cp /content/gdrive/MyDrive/data/normal/* /content/yolov7/data_source/Normal
 ```
 
-2.2 Merge the vehicle images with the backgrounds
+2.2 Merge the foreground and background images in random combinations while ensuring class equality and also generating bounding box labels in the YOLO format. The generated amount of pictures can be modified in line 201, the origial code generates 2000 merged images (braking and normal, respectively) 
 ``` shell
 create_dirs()
 ```
-2.3 Split the generated images and labels into training, validation and testing sets
+2.3 Split the generated images and labels randomly into training, validation and testing sets
 ``` shell
 split_dataset()
 ```
-2.4 Generate the yaml file containing the dataset paths along with the class details
+2.4 Generate a custom.yaml file containing dataset paths, number of object classes and object class names. Then save the file to the yolov7's 'data' folder.
 ``` shell
 create_yaml()
 ```
-If so far so good, then congets! The preprocessing is completed!
+If so far so good, then congets! The preprocessing is truely completed!
 
+## Step 3 Start training
+
+The training process uses YOLOv7 pretrained weights downloaded from the official YOLO repository. Details about all the train.py command line arguments can be found [here](https://github.com/WongKinYiu/yolov7/blob/6ded32cc8d0ab40ea51f385876c143011ec69197/train.py#L526). Few of the ones used here are:
+
+--weights: path to the pretrained weights downloaded earlier
+
+--data: path to the yaml file containing details about dataset path and object classes.
+
+--batch-size: The number of subsets/parts the dataset is divided into to pass through the network per epoch. Depends on the size of the dataset and the GPU memory.
+
+--device: Processing hardware, 0 for single GPU, 0,1,.. for multiple parallel GPUs, CPU for CPU.
+
+--img-size: Image size for training.
+
+--cfg: Path to the yaml config file appropriate to the training model
+
+--epochs: Number of training epochs
+3.1
+``` shell
+!python train.py --weights yolov7.pt --data data/custom.yaml --batch-size 8 --device 0 --img-size 800 --cfg cfg/training/yolov7.yaml --epochs 20
+```
+Noted that the origial tutoral trained the model in 40 epochs. Yet if you don't have a good GPU or spend 10USD to buy colab pro, the free version colab is not allowed to finish 40 epochs. You'll find it quite frastrated that after waiting for 3hrs, the program halted at 33 epoch. So we recommended you set 20 epochs at first. (The accuracy is quite good even tained with 20 epochs)
+![start training](https://github.com/HunterWang123456/Braking-Light-Detection/assets/74261517/f5ee39d8-d2b3-496f-9e66-d13a78b3c782)
+3.2 The training result and some data will be stored in the follow path: content/yolov7/runs/train/exp
+![results](https://github.com/HunterWang123456/Braking-Light-Detection/assets/74261517/82a51c01-db6a-49a4-bb87-b604df933da5)
+visualize the tested result:
+label
+![test_batch2_labels](https://github.com/HunterWang123456/Braking-Light-Detection/assets/74261517/8c4af2d2-9256-4beb-9fe9-187a7f5a5331)
+prediction
+![test_batch2_pred](https://github.com/HunterWang123456/Braking-Light-Detection/assets/74261517/d4b0dcfa-8b7e-4f9c-8bc7-14f33b67acf4)
+3.3 Evaluation
+
+you can download the fractioned frames in the above folder and upload them to a folder called 
+``` shell
+!python detect.py --weights best.pt --img-size 800 --conf-thres 0.5 --source [path of your test images] --device 0
+```
+the result will be frames with bounding box labeling braking cars, and if you re-construct them back into a GIF/mp4 (can use [ffmpeg](https://www.bannerbear.com/blog/how-to-make-gifs-from-images-using-ffmpeg/#selecting-a-range-of-files), it's very convenient and can be operated with your terminal) then the result will be like the following
 
 ![output_3](https://github.com/HunterWang123456/yolov7_for_braking/assets/74261517/4fc41c1b-00a4-40d2-963e-f6d14ad4ed46)
 
@@ -374,3 +406,4 @@ If so far so good, then congets! The preprocessing is completed!
 * [https://github.com/TexasInstruments/edgeai-yolov5/tree/yolo-pose](https://github.com/TexasInstruments/edgeai-yolov5/tree/yolo-pose)
 
 </details>
+Hope you enjoy the tutorial and get more understanding regarding YOLO model and machine learning!
