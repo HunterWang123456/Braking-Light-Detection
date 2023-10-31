@@ -374,6 +374,7 @@ The training process uses YOLOv7 pretrained weights downloaded from the official
 ```
 Noted that the origial tutoral trained the model in 40 epochs. Yet if you don't have a good GPU or spend 10USD to buy colab pro, the free version colab is not allowed to finish 40 epochs. You'll find it quite frastrated that after waiting for 3hrs, the program halted at 33 epoch. So we recommended you set 20 epochs at first. (The accuracy is quite good even tained with 20 epochs)
 ![start training](https://github.com/HunterWang123456/Braking-Light-Detection/assets/74261517/f5ee39d8-d2b3-496f-9e66-d13a78b3c782)
+
 3.2 The training result and some data will be stored in the follow path: content/yolov7/runs/train/exp
 ![results](https://github.com/HunterWang123456/Braking-Light-Detection/assets/74261517/82a51c01-db6a-49a4-bb87-b604df933da5)
 visualize the tested result:
@@ -383,7 +384,7 @@ prediction
 ![test_batch2_pred](https://github.com/HunterWang123456/Braking-Light-Detection/assets/74261517/d4b0dcfa-8b7e-4f9c-8bc7-14f33b67acf4)
 3.3 Evaluation
 
-you can download the fractioned frames in the above folder and upload them to a folder called 
+you can download the fractioned frames in "testing data" in my repo and upload them. Insert the following code to test your model with some real on-road settings! 
 ``` shell
 !python detect.py --weights best.pt --img-size 800 --conf-thres 0.5 --source [path of your test images] --device 0
 ```
