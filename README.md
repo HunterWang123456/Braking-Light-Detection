@@ -367,6 +367,7 @@ The training process uses YOLOv7 pretrained weights downloaded from the official
 --cfg: Path to the yaml config file appropriate to the training model
 
 --epochs: Number of training epochs
+
 3.1
 ``` shell
 !python train.py --weights yolov7.pt --data data/custom.yaml --batch-size 8 --device 0 --img-size 800 --cfg cfg/training/yolov7.yaml --epochs 20
